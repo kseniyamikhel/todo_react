@@ -5,9 +5,9 @@ import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
-import reducers from './reducers';
+import reducers from './reducers/';
 import createHistory from 'history/createBrowserHistory';
-import { ConnectedRouter, routerReducer, routerMiddleware } from 'react-router-redux';
+import { ConnectedRouter, routerMiddleware } from 'react-router-redux';
 
 const history = createHistory();
 const middleware = routerMiddleware(history);
