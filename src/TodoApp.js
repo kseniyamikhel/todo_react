@@ -3,50 +3,72 @@ import TodoList from './TodoList';
 import TodoForm from './TodoForm';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
+import {getCompletedTodos, getIncompletedTodos} from './selectors';
 
 class TodoApp extends React.Component {
     constructor(props) {
         super(props);
-        this.onSubmitHandler = this.onSubmitHandler.bind(this);
+        this.addTodoToStore = this.addTodoToStore.bind(this);
         this.removeTodoItem = this.removeTodoItem.bind(this);
+        this.completeTodo = this.completeTodo.bind(this);
     }
-    onSubmitHandler(e){
-        e.preventDefault();
-        const text = e.target.elements.todo.value;
-        const todo = {text};
+    addTodoToStore(todo){
         this.props.submitHandler(todo);
-        e.target.reset();
-        e.target.elements.todo.focus();
     }
-    removeTodoItem(todoIndex){
-        const todos = this.props.todos.filter((todo, index) => index !== todoIndex);
-        this.props.deleteHandler(todos);
+    removeTodoItem(todoID){
+        this.props.deleteHandler(todoID);
+    }
+    completeTodo(todoID){
+        this.props.completeHandler(todoID);
     }
     render(){
-
-        const {todos} = this.props;
         return(
             <div>
-                <TodoList removeTodoItem={this.removeTodoItem} todos={todos} />
-                <TodoForm onSubmitHandler={this.onSubmitHandler} />
+                <TodoList
+                    completeTodo={this.completeTodo}
+                    removeTodoItem={this.removeTodoItem}
+                    incompletedTodos={this.props.incompletedTodos}
+                />
+                <TodoForm addTodoToStore={this.addTodoToStore} />
             </div>
         )
     }
 }
 TodoApp.propTypes = {
-    todos: PropTypes.array.isRequired
+    incompletedTodos: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+            category: PropTypes.string.isRequired,
+            deadline: PropTypes.string,
+            done: PropTypes.bool.isRequired,
+        }).isRequired
+    ).isRequired,
+    completedTodos: PropTypes.arrayOf(
+        PropTypes.shape({
+            id: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
+            category: PropTypes.string.isRequired,
+            deadline: PropTypes.string,
+            done: PropTypes.bool.isRequired,
+        }).isRequired
+    ).isRequired,
 };
 
 export default connect(
     state => ({
-        todos: state.todos
+        incompletedTodos: getIncompletedTodos(state),
+        completedTodos: getCompletedTodos(state)
     }),
     dispatch => ({
-        submitHandler: (todoText) => {
-            dispatch({ type: 'ADD_TODO', todo: todoText });
+        submitHandler: (todo) => {
+            dispatch({ type: 'ADD_TODO', todo: todo });
         },
-        deleteHandler: (todos) => {
-            dispatch({ type: 'DELETE_TODO', state: todos });
+        deleteHandler: (todoID) => {
+            dispatch({ type: 'DELETE_TODO', index: todoID });
+        },
+        completeHandler: (todoID) => {
+            dispatch({ type: 'COMPLETE_TODO', index: todoID })
         }
     })
 )(TodoApp);

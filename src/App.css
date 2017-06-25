@@ -22,23 +22,16 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
-.done{
-  text-decoration: line-through;
-}
 #root{
-  width: 300px;
   margin: 0 auto;
-  text-align: center;
+  padding: 10px;
 }
 li{
   text-align: left;
 }
-.delButton{
-  background-color: red;
-  color: white;
-  font-weight: bold;
-  font-size: 0.7rem;
-  border: none;
-  float: right;
-  padding: 1px 4px;
+.content{
+  padding-left: 280px;
+}
+.link{
+  text-decoration: none;
 }

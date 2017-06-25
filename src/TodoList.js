@@ -1,20 +1,26 @@
 import React from 'react';
 import TodoItem from './TodoItem';
 import PropTypes from 'prop-types';
+import {List} from 'material-ui/List';
 
 class TodoList extends React.Component {
-    render(){
-        const {removeTodoItem, todos} = this.props;
 
-        if(todos.length > 0){
+    render(){
+        const {removeTodoItem, incompletedTodos, completeTodo} = this.props;
+        if(incompletedTodos.length > 0){
             return (
                 <div>
-                    <h2>You have {todos.length} things to do:</h2>
-                    <ol>
-                        {todos.map((todo, index) => (
-                            <TodoItem removeTodoItem={removeTodoItem} index={index} todo={todo} key={index} />)
-                        )}
-                    </ol>
+                    <h2>You have {incompletedTodos.length} things to do:</h2>
+                        <List>
+                            {incompletedTodos.map((todo) => (
+                                <TodoItem
+                                    completeTodo={completeTodo}
+                                    removeTodoItem={removeTodoItem}
+                                    todo={todo}
+                                    key={todo.id}
+                                />)
+                            )}
+                        </List>
                 </div>
             )
         }
@@ -27,6 +33,7 @@ class TodoList extends React.Component {
 }
 TodoList.propTypes = {
     removeTodoItem: PropTypes.func.isRequired,
-    todos: PropTypes.array.isRequired
+    incompletedTodos: PropTypes.array.isRequired,
+    completeTodo: PropTypes.func.isRequired
 };
 export default TodoList;
