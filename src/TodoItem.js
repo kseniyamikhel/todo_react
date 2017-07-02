@@ -46,8 +46,7 @@ class TodoItem extends React.Component {
                         value={this.state.value}
                         onChange={this.handleChange}
                     >
-                        <MenuItem value="1">Edit</MenuItem>
-                        <MenuItem value="2" onClick={this.onClickHandlerDelete}>Delete</MenuItem>
+                        <MenuItem value="1" onClick={this.onClickHandlerDelete}>Delete</MenuItem>
                     </IconMenu>
                 }
 

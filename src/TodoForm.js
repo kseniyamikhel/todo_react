@@ -50,8 +50,9 @@ class TodoForm extends React.Component {
         id = id.hex;
         const todo = {id, title, category, deadline, done};
         this.props.addTodoToStore(todo);
-        //e.target.elements.todo.value = "";
-        //this.setState({value: ""});
+        e.target.elements.todo.value = "";
+        e.target.elements.todo.focus();
+        this.setState({value: ""});
         //e.target.elements.deadline.value = "";
     }
     handleChange = (event, index, value) => this.setState({value});
